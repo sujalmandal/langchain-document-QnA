@@ -4,4 +4,3 @@ openai
 tiktoken
 unstructured
 faiss-cpu
-embeddings

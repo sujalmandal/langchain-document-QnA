@@ -1,0 +1,9 @@
+version: "3.3"
+services:
+  esign:
+    image: "document-gpt:1.0"
+    ports:
+      - "9090:9090"
+    environment:
+      - UPLOAD_DIR=""
+      - OPENAI_API_KEY=""

@@ -53,4 +53,4 @@ if __name__ == "__main__":
         raise Exception(f'env variable with the name {UPLOAD_DIR_NAME} is missing.')
     app.secret_key = os.urandom(24)
     app.config[UPLOAD_DIR_NAME] = os.getenv(UPLOAD_DIR_NAME)
-    app.run()
+    app.run(host='0.0.0.0', port=9090)
