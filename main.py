@@ -1,4 +1,5 @@
 import os
+import uuid
 import pickle
 from langchain.llms import OpenAI
 from langchain.chains import RetrievalQA
@@ -8,34 +9,51 @@ from langchain.document_loaders import UnstructuredPDFLoader
 
 OPENAI_API_KEY_NAME = "OPENAI_API_KEY"
 LLM_MODEL_NAME = "text-davinci-003"
-PDF_FILE_NAME = "story.pdf"
-VECTOR_STORE_NAME = "vectorized_doc.pkl"
 
 if os.getenv(OPENAI_API_KEY_NAME, default=None) is None:
     raise Exception(f'create an env variable in your computer with the name {OPENAI_API_KEY_NAME}')
 
 llm = OpenAI(model_name=LLM_MODEL_NAME)
 
-loader = UnstructuredPDFLoader(PDF_FILE_NAME, mode="elements", strategy="fast")
-documents = loader.load()
 
-embeddings = OpenAIEmbeddings()
-vector_store = FAISS.from_documents(documents, embeddings)
+def read_document(file_name):
+    # read file
 
-# Save vector store
-# TODO - partition the work into different table
-with open(VECTOR_STORE_NAME, "wb") as f:
-    pickle.dump(vector_store, f)
+    document_id = uuid.uuid4()
+    loader = UnstructuredPDFLoader(file_name, mode="elements", strategy="fast")
+    documents = loader.load()
 
-retriever = vector_store.as_retriever()
+    embeddings = OpenAIEmbeddings()
+    vector_store = FAISS.from_documents(documents, embeddings)
 
-qa = RetrievalQA.from_chain_type(
-    llm=llm,
-    chain_type="stuff",
-    retriever=retriever,
-    return_source_documents=True)
+    vectorized_file_name = f'vec_{document_id}.pkl'
+    # Save vector store
+    with open(vectorized_file_name, "wb") as f:
+        pickle.dump(vector_store, f)
 
-query = "Where does Sujal current live and where does he work?"
-result = qa({"query": query})
+    return document_id
 
-print(result['result'])
+
+def answer(document_id, question):
+    vector_store = pickle.load(open(f'vec_{document_id}.pkl', "rb"))
+    retriever = vector_store.as_retriever()
+
+    qa = RetrievalQA.from_chain_type(
+        llm=llm,
+        chain_type="stuff",
+        retriever=retriever,
+        return_source_documents=True)
+
+    result = qa({"query": question})
+
+    return result['result']
+
+
+def show_all_files():
+    file_names = []
+    for path, currentDirectory, files in os.walk("./"):
+        for file in files:
+            if file.startswith("vec_"):
+                file_names.append(file)
+
+    return file_names
