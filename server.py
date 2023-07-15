@@ -50,7 +50,7 @@ if __name__ == "__main__":
     if os.getenv(main.OPENAI_API_KEY_NAME, default=None) is None:
         raise Exception(f'env variable with the name {main.OPENAI_API_KEY_NAME} is required.')
     if os.getenv(UPLOAD_DIR_NAME, default=None) is None:
-        raise Exception(f'env variable with the name {OPENAI_API_KEY_NAME} is missing.')
+        raise Exception(f'env variable with the name {UPLOAD_DIR_NAME} is missing.')
     app.secret_key = os.urandom(24)
     app.config[UPLOAD_DIR_NAME] = os.getenv(UPLOAD_DIR_NAME)
     app.run()
