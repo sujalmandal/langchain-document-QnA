@@ -1,0 +1,1 @@
+docker build -t document-gpt:1.0 .

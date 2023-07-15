@@ -1,2 +1,7 @@
 langchain~=0.0.233
 Flask~=2.3.2
+openai
+tiktoken
+unstructured
+faiss-cpu
+embeddings
