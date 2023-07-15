@@ -6,6 +6,7 @@ from flask import Flask, flash, request
 app = Flask(__name__)
 
 UPLOAD_DIR_NAME = 'UPLOAD_DIR'
+conversation_cache = {}
 
 
 @app.route("/", methods=['GET'])
