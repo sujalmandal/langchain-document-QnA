@@ -6,6 +6,8 @@ from flask import Flask, flash, request
 app = Flask(__name__)
 
 upload_dir = "./"
+OPENAI_API_KEY_NAME = "OPENAI_API_KEY"
+UPLOAD_DIR_NAME = 'upload_dir'
 
 
 @app.route("/", methods=['GET'])
@@ -47,6 +49,10 @@ def question():
 
 
 if __name__ == "__main__":
+    if os.getenv(OPENAI_API_KEY_NAME, default=None) is None:
+        raise Exception(f'env variable with the name {OPENAI_API_KEY_NAME} is required.')
+    if os.getenv(UPLOAD_DIR_NAME, default=None) is None:
+        raise Exception(f'env variable with the name {OPENAI_API_KEY_NAME} is missing.')
     app.secret_key = os.urandom(24)
-    app.config['upload_dir'] = upload_dir
+    app.config[UPLOAD_DIR_NAME] = os.getenv(UPLOAD_DIR_NAME)
     app.run()

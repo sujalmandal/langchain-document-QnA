@@ -10,9 +10,6 @@ from langchain.document_loaders import UnstructuredPDFLoader
 OPENAI_API_KEY_NAME = "OPENAI_API_KEY"
 LLM_MODEL_NAME = "text-davinci-003"
 
-if os.getenv(OPENAI_API_KEY_NAME, default=None) is None:
-    raise Exception(f'create an env variable in your computer with the name {OPENAI_API_KEY_NAME}')
-
 llm = OpenAI(model_name=LLM_MODEL_NAME)
 
 
