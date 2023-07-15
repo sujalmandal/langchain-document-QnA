@@ -1,4 +1,4 @@
-langchain~=0.0.233
+langchain==0.0.234
 Flask~=2.3.2
 openai
 tiktoken
