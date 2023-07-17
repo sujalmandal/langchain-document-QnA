@@ -32,7 +32,7 @@ def upload_file():
     file_path = os.path.join(app.config[UPLOAD_DIR_NAME], file.filename)
     file.save(file_path)
     vec_file = main.read_document(file_path)
-    return f"file successfully read : {vec_file}"
+    return f"file successfully read, document_id : {vec_file}"
 
 
 @app.route('/question', methods=['POST'])

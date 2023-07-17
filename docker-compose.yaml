@@ -1,9 +1,11 @@
 version: "3.3"
 services:
-  esign:
+  document-gpt:
     image: "document-gpt:1.0"
+    build:
+      dockerfile: ./Dockerfile
     ports:
       - "9090:9090"
     environment:
-      - UPLOAD_DIR=""
-      - OPENAI_API_KEY=""
+      - UPLOAD_DIR=.
+      - OPENAI_API_KEY=
